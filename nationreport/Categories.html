@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Categories - SA TradeHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo h1 {
+            color: #FF6B00;
+            font-size: 24px;
+        }
+
+        .logo span {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+        }
+
+        .navbar ul li {
+            margin: 0 15px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: #FF6B00;
+        }
+
+        .auth-buttons button {
+            margin-left: 10px;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background: #FF6B00;
+            color: white;
+        }
+
+        .btn-signup {
+            background: #f8f8f8;
+            color: #333;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #FF6B00, #FF8C00);
+            color: white;
+            padding: 120px 0 60px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Search and Filter */
+        .search-filter {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+
+        .filter-select {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            min-width: 200px;
+        }
+
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .category-icon {
+            background: linear-gradient(135deg, #FF6B00, #FF8C00);
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .category-content {
+            padding: 25px;
+        }
+
+        .category-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .category-content p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .category-stats {
+            display: flex;
+            justify-content: space-between;
+            color: #999;
+            font-size: 0.85rem;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 15px;
+        }
+
+        /* Featured Industries */
+        .industries-section {
+            background: #f8f8f8;
+            padding: 80px 0;
+        }
+
+        .industries-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .industry-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .industry-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .industry-icon {
+            width: 80px;
+            height: 80px;
+            background: #FF6B00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 2rem;
+        }
+
+        /* Regional Section */
+        .regional-section {
+            padding: 80px 0;
+        }
+
+        .provinces-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .province-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .province-card:hover {
+            background: #FF6B00;
+            color: white;
+        }
+
+        .province-card h4 {
+            margin-bottom: 10px;
+        }
+
+        .province-card p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #FF6B00, #FF8C00);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .cta-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #FF6B00;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 10px 28px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #FF6B00;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            margin-bottom: 20px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .footer-section ul li a:hover {
+            color: #FF6B00;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header .container {
+                flex-direction: column;
+            }
+
+            .navbar ul {
+                margin: 20px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .navbar ul li {
+                margin: 5px 10px;
+            }
+
+            .page-header {
+                padding: 100px 0 40px;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>SA TradeHub</h1>
+                <span>South Africa's Business Marketplace</span>
+            </div>
+            
+            <nav class="navbar">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="suppliers.html">Suppliers</a></li>
+                    <li><a href="categories.html" style="color: #FF6B00;">Categories</a></li>
+                    <li><a href="trade-services.html">Trade Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="auth-buttons">
+                <button class="btn-login">Join Free</button>
+                <button class="btn-signup">Sign In</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Product Categories</h1>
+            <p>Browse through South Africa's key industries and business sectors</p>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>All Categories</h2>
+                <p>Explore products and services across South Africa's diverse economy</p>
+            </div>
+
+            <!-- Search and Filter -->
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search categories...">
+                </div>
+                <select class="filter-select">
+                    <option>All Industries</option>
+                    <option>Agriculture</option>
+                    <option>Mining</option>
+                    <option>Manufacturing</option>
+                    <option>Technology</option>
+                    <option>Services</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Provinces</option>
+                    <option>Gauteng</option>
+                    <option>Western Cape</option>
+                    <option>KwaZulu-Natal</option>
+                    <option>Eastern Cape</option>
+                    <option>Free State</option>
+                </select>
+            </div>
+
+            <!-- Categories Grid -->
+            <div class="categories-grid">
+                <!-- Mining & Minerals -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Mining & Minerals</h3>
+                        <p>Gold, diamonds, platinum, coal and other mineral resources from South Africa's rich mining sector.</p>
+                        <div class="category-stats">
+                            <span>1,247 Suppliers</span>
+                            <span>5,892 Products</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Agriculture -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Agriculture & Farming</h3>
+                        <p>Fresh produce, wine, livestock, grains and agricultural equipment from South Africa's fertile lands.</p>
+                        <div class="category-stats">
+                            <span>2,156 Suppliers</span>
+                            <span>12,435 Products</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manufacturing -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Manufacturing</h3>
+                        <p>Automotive components, machinery, textiles, chemicals and various manufactured goods.</p>
+                        <div class="category-stats">
+                            <span>3,421 Suppliers</span>
+                            <span>28,763 Products</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technology -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Technology & IT</h3>
+                        <p>Software development, IT services, telecommunications, electronics and tech solutions.</p>
+                        <div class="category-stats">
+                            <span>1,873 Suppliers</span>
+                            <span>9,452 Products</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tourism -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-umbrella-beach"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Tourism & Hospitality</h3>
+                        <p>Travel services, accommodation, safari tours, and hospitality experiences across South Africa.</p>
+                        <div class="category-stats">
+                            <span>892 Suppliers</span>
+                            <span>3,245 Services</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Renewable Energy -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-solar-panel"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Renewable Energy</h3>
+                        <p>Solar power, wind energy, biofuels and sustainable energy solutions for a greener future.</p>
+                        <div class="category-stats">
+                            <span>567 Suppliers</span>
+                            <span>2,134 Products</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Textiles -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Textiles & Apparel</h3>
+                        <p>Clothing, fabrics, leather goods, and fashion items from South African designers and manufacturers.</p>
+                        <div class="category-stats">
+                            <span>1,234 Suppliers</span>
+                            <span>15,678 Products</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Construction -->
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-hard-hat"></i>
+                    </div>
+                    <div class="category-content">
+                        <h3>Construction & Building</h3>
+                        <p>Building materials, construction services, architectural design, and infrastructure development.</p>
+                        <div class="category-stats">
+                            <span>1,789 Suppliers</span>
+                            <span>12,345 Products</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Industries -->
+    <section class="industries-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Key South African Industries</h2>
+                <p>Explore the backbone of South Africa's economy</p>
+            </div>
+
+            <div class="industries-grid">
+                <div class="industry-card">
+                    <div class="industry-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3>Mining</h3>
+                    <p>World's largest producer of platinum, chrome, vanadium and manganese</p>
+                </div>
+
+                <div class="industry-card">
+                    <div class="industry-icon">
+                        <i class="fas fa-wine-bottle"></i>
+                    </div>
+                    <h3>Wine Production</h3>
+                    <p>World-class vineyards producing award-winning wines in the Cape Winelands</p>
+                </div>
+
+                <div class="industry-card">
+                    <div class="industry-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>Automotive</h3>
+                    <p>Major automotive manufacturing hub for global brands with extensive supply chains</p>
+                </div>
+
+                <div class="industry-card">
+                    <div class="industry-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Agriculture</h3>
+                    <p>Leading exporter of citrus fruits, grapes, corn, apples and sugar</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Regional Section -->
+    <section class="regional-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Browse by Province</h2>
+                <p>Discover products and suppliers from specific regions of South Africa</p>
+            </div>
+
+            <div class="provinces-grid">
+                <div class="province-card">
+                    <h4>Gauteng</h4>
+                    <p>Economic hub with diverse manufacturing and services</p>
+                </div>
+                <div class="province-card">
+                    <h4>Western Cape</h4>
+                    <p>Wine, tourism, technology and creative industries</p>
+                </div>
+                <div class="province-card">
+                    <h4>KwaZulu-Natal</h4>
+                    <p>Agriculture, manufacturing and port services</p>
+                </div>
+                <div class="province-card">
+                    <h4>Eastern Cape</h4>
+                    <p>Automotive manufacturing and agricultural products</p>
+                </div>
+                <div class="province-card">
+                    <h4>Free State</h4>
+                    <p>Agriculture, mining and renewable energy</p>
+                </div>
+                <div class="province-card">
+                    <h4>Mpumalanga</h4>
+                    <p>Coal mining, agriculture and power generation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Expand Your Business?</h2>
+                <p>Join thousands of South African businesses already connecting with buyers and suppliers on SA TradeHub</p>
+                <div class="cta-buttons">
+                    <button class="btn-primary">Register as Supplier</button>
+                    <button class="btn-secondary">Browse Products</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>SA TradeHub</h3>
+                    <p>Connecting South African businesses with global markets since 2024</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Johannesburg, South Africa</p>
+                    <p>Email: info@sahub.co.za</p>
+                    <p>Phone: +27 11 123 4567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 SA TradeHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Category card click functionality
+        document.querySelectorAll('.category-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const categoryName = card.querySelector('h3').textContent;
+                alert(`Redirecting to ${categoryName} products page`);
+                // In a real implementation, this would navigate to the category page
+            });
+        });
+
+        // Province card click functionality
+        document.querySelectorAll('.province-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const provinceName = card.querySelector('h4').textContent;
+                alert(`Showing suppliers and products from ${provinceName}`);
+                // In a real implementation, this would filter by province
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-box input');
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const categories = document.querySelectorAll('.category-card');
+            
+            categories.forEach(category => {
+                const categoryName = category.querySelector('h3').textContent.toLowerCase();
+                const categoryDesc = category.querySelector('p').textContent.toLowerCase();
+                
+                if (categoryName.includes(searchTerm) || categoryDesc.includes(searchTerm)) {
+                    category.style.display = 'block';
+                } else {
+                    category.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
